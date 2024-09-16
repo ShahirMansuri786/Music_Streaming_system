@@ -1,0 +1,30 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV["RAILS_DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
+  idle_timeout: <%= ENV["RAILS_IDLE_CONNECTION"] || 60 %>
+  port: <%= ENV['RAILS_DATABASE_PORT'] || 5432 %>
+
+development:
+  <<: *default
+  database: music_system_development
+  username: postgres
+  password: postgres
+  host: localhost
+  port: 5432
+
+test:
+  <<: *default
+  database: music_system_test
+  username: postgres
+  password: postgres
+  host: localhost
+  port: 5432
+
+production:
+  <<: *default
+  database: <%= ENV['DATABASE_NAME'] %>
+  username: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  port: <%= ENV['DATABASE_PORT'] %>
