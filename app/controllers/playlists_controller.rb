@@ -1,5 +1,6 @@
 class PlaylistsController < ApplicationController
   skip_before_action :authenticate_user, only: [:create]
+  before_action :find_playlist , only: [:show , :update, :destroy]
 
   def index 
     @playlists = Playlist.all
@@ -7,7 +8,7 @@ class PlaylistsController < ApplicationController
   end
 
   def show 
-    render json: @playlists , status: 200
+    render json: @playlist , status: 200
   end
 
   def create
@@ -15,7 +16,7 @@ class PlaylistsController < ApplicationController
     if playlist.save
       render json: playlist , status: 201
     else
-      render json: {error: playlist.error.full_message} , status: 503
+      render json: {error: playlist.errors.full_message} , status: 503
     end
   end
 
@@ -39,5 +40,9 @@ class PlaylistsController < ApplicationController
 
   def playlist_params
     params.permit(:user_id, :name)
+  end
+
+  def find_playlist
+    @playlist = Playlist.find(params[:id])
   end
 end

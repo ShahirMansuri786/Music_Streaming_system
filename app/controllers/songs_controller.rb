@@ -1,5 +1,7 @@
 class SongsController < ApplicationController
+  # include JwtToken
   before_action :find_song, only: [:update , :show , :destroy]
+  before_action :current_user
 
   def index 
     songs = Song.all
@@ -11,8 +13,8 @@ class SongsController < ApplicationController
   end
 
   def create
-    if User.find(params[:user_id]).role == "admin"
-      song = Song.new(song_params)
+    if @current_user.role == "admin"
+      song = @current_user.songs.new(song_params)
       if song.save
         render json: song , status: 201
       else
@@ -24,19 +26,22 @@ class SongsController < ApplicationController
   end
 
   def update
-    unless @song.update(song_params)
+    if @song.update(song_params)
+      render json: @song , status: 200
+    else
       render json: {error: @song.error.full_message} , status: 503
     end
   end
 
   def destroy
     @song.destroy
+    render json: @song , status: 200
   end
 
   private
 
   def song_params
-    params.permit(:name , :user_id, :category_id , :singer_name)
+    params.permit(:name, :category_id, :singer_name)
   end
 
   def find_song
