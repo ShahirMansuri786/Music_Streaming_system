@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
   skip_before_action :authenticate_user, only: [:create]
-  # before_action :find_user, only: [:update , :show , destroy]
+  before_action :find_user, only: [:update , :show , :destroy]
 
   def index 
-    @users = User.all
-    render json: @users , status: 200
+    users = User.all
+    render json: users , status: 200
   end
 
   def show 
@@ -43,5 +43,4 @@ class UsersController < ApplicationController
   def find_user
     @user = User.find(params[:id])
   end
-
 end
