@@ -2,7 +2,7 @@ class SongsController < ApplicationController
   before_action :find_song, only: [:update , :show , :destroy]
 
   def index 
-    songs = User.all
+    songs = Song.all
     render json: songs , status: 200
   end
 
