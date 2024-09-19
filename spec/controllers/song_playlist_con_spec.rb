@@ -39,7 +39,7 @@ RSpec.describe SongPlaylistsController, type: :controller do
 
   describe "SongPlaylistsController#create" do
     it "creates song_playlist" do
-      process :create, method: :post ,  params: { playlist_id_id: playlist.id, song_id: song.id }
+      process :create, method: :post ,  params: { playlist_id: playlist.id, song_id: song.id }
       expect(SongPlaylist.last.playlist_id).to eq(playlist.id)
     end
   end
